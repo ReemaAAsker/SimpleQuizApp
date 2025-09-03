@@ -19,12 +19,12 @@ class Quizbrain {
     ),
     Question('Flutter uses the Dart programming language.', true),
   ];
+  bool isFinish() {
+    return questionNumber == _questionBank.length - 1;
+  }
 
   void nextQuestion() {
-    if (questionNumber == _questionBank.length - 1) {
-      questionNumber = 0;
-    } else
-      ++questionNumber;
+    ++questionNumber;
   }
 
   String getQuestionText() {
@@ -35,11 +35,11 @@ class Quizbrain {
     return false;
   }
 
-  bool isFinish() {
-    return false;
-  }
-
   bool checkAnswer(userAnswer) {
     return _questionBank[questionNumber].questionAnswer == userAnswer;
+  }
+
+  void reset() {
+    questionNumber = 0;
   }
 }

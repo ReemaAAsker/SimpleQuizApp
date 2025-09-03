@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:start_quiz_app/logic/QuizBrain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class SimpleQuizAPP extends StatefulWidget {
   SimpleQuizAPP({super.key});
@@ -11,13 +14,40 @@ class SimpleQuizAPP extends StatefulWidget {
 class _SimpleQuizAPPState extends State<SimpleQuizAPP> {
   Quizbrain quizBrain = Quizbrain();
   List<Icon> scorekeeper = [];
+  bool isFinish = false;
   void addUserScore(userAnswer) {
-    setState(() {
-      quizBrain.checkAnswer(true)
-          ? scorekeeper.add(Icon(Icons.check, color: Colors.green))
-          : scorekeeper.add(Icon(Icons.close, color: Colors.red));
-      quizBrain.nextQuestion();
-    });
+    if (quizBrain.isFinish()) {
+      print("finish");
+
+      Timer(Duration(seconds: 1), () {
+        Alert(
+          context: context,
+          type: AlertType.success,
+          title: "Done",
+          desc: "Will Done",
+        ).show();
+        setState(() {
+          quizBrain.reset();
+          scorekeeper.clear();
+        });
+      });
+
+      // Future.delayed(Duration(seconds: 3), () {
+      //   Alert(
+      //     context: context,
+      //     type: AlertType.success,
+      //     title: "Done",
+      //     desc: "Will Done",
+      //   ).show();
+      // });
+    } else {
+      setState(() {
+        quizBrain.checkAnswer(true)
+            ? scorekeeper.add(Icon(Icons.check, color: Colors.green))
+            : scorekeeper.add(Icon(Icons.close, color: Colors.red));
+        quizBrain.nextQuestion();
+      });
+    }
   }
 
   @override
